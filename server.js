@@ -3,11 +3,21 @@
 const http = require('http');
 const { WebSocketServer } = require('ws');
 const PORT = process.env.PORT || 8080;
-const rooms = new Map(); // codigo -> { host: ws, guests: Map(id -> ws) }
+const rooms = new Map(); // codigo -> { host: ws, guests: Map(id -> ws), latestState }
 
 const srv = http.createServer((q, r) => { r.writeHead(200, { 'Content-Type': 'text/plain' }); r.end('sinutec ok'); });
 const wss = new WebSocketServer({ server: srv, maxPayload: 1 << 20 });
 const tx = (w, o) => { if (w && w.readyState === 1) w.send(JSON.stringify(o)); };
+setInterval(() => {
+  for (const r of rooms.values()) {
+    const state = r.latestState;
+    if (!state) continue;
+    r.latestState = null;
+    r.guests.forEach(g => {
+      if (g.readyState === 1 && g.bufferedAmount < 32768) tx(g, state);
+    });
+  }
+}, 16);
 
 wss.on('connection', ws => {
   ws.alive = true;
@@ -20,7 +30,7 @@ wss.on('connection', ws => {
       if (!/^[A-Z0-9]{5}$/.test(c)) return tx(ws, { k: 'err', e: 'bad-code' });
       if (rooms.has(c) || rooms.size >= 300) return tx(ws, { k: 'err', e: 'unavailable-id' });
       ws.room = { c, host: true };
-      rooms.set(c, { host: ws, guests: new Map() });
+      rooms.set(c, { host: ws, guests: new Map(), latestState: null });
       tx(ws, { k: 'ok' });
     } else if (o.k === 'join') {
       if (ws.room) return;
@@ -36,7 +46,11 @@ wss.on('connection', ws => {
       const r = rooms.get(ws.room.c); if (!r) return;
       if (ws.room.host) {
         const out = { k: 'd', m: o.m };
-        if (o.to) tx(r.guests.get(o.to), out); else r.guests.forEach(g => tx(g, out));
+        if (o.m && o.m.t === 'st' && o.m.mv) r.latestState = out;
+        else {
+          if (o.m && o.m.t === 'st') r.latestState = null;
+          if (o.to) tx(r.guests.get(o.to), out); else r.guests.forEach(g => tx(g, out));
+        }
       } else tx(r.host, { k: 'd', from: ws.room.id, m: o.m });
     } else if (o.k === 'kick' && ws.room && ws.room.host) {
       const r = rooms.get(ws.room.c), g = r && r.guests.get(o.id); if (g) g.close();
