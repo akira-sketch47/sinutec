@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SINUTEC</title>
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Rubik:wght@400;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+
 <script src="https://w.soundcloud.com/player/api.js"></script>
 <style>
 :root{--bg:#0b0820;--p:#ff2e93;--c:#2ef2ff;--y:#ffe14d;--card:#17123aee;--tx:#f4f1ff}
@@ -69,7 +69,7 @@ button{cursor:pointer}hr{width:100%;border:0;border-top:1px dashed #4b3d9a}
 #edt button{padding:6px 10px}#edt button.on{border-color:var(--y);box-shadow:0 0 8px var(--y)}
 </style></head><body>
 <main id="menu" class="scr"><h1>SINUTEC</h1><p class="sub">sinuca 8 ball · salas privadas · só os amigos da facul</p>
-<div class="card"><label class="bnr" id="bnr" title="Banner do perfil"><span id="bnt">🖼 Escolher banner do perfil</span><input type="file" id="bf" accept="image/*" hidden></label><div class="prof"><label class="avb" title="Foto de perfil"><img id="avi" hidden><span id="avt">📷</span><input type="file" id="af" accept="image/*" hidden></label><div><input id="nm" placeholder="Seu nome" maxlength="14"><input id="tg" placeholder="Sua tag (ex: Profissional da tacada)" maxlength="40"></div></div><button data-a="cedit">🎨 Desenhar meu taco</button><button class="b" data-a="create">Criar sala</button><hr><input id="cin" placeholder="CÓDIGO DA SALA" maxlength="5"><button class="b alt" data-a="join">Entrar na sala</button></div></main>
+<div class="card"><label class="bnr" id="bnr" title="Banner do perfil"><span id="bnt">🖼 Escolher banner do perfil</span><input type="file" id="bf" accept="image/*" hidden></label><div class="prof"><label class="avb" title="Foto de perfil"><img id="avi" hidden><span id="avt">📷</span><input type="file" id="af" accept="image/*" hidden></label><div><input id="nm" placeholder="Seu nome" maxlength="14"><input id="tg" placeholder="Sua tag (ex: Profissional da tacada)" maxlength="40"></div></div><button data-a="cedit">🎨 Desenhar meu taco</button><button class="b" data-a="create">Criar sala</button><hr><input id="cin" placeholder="CÓDIGO DA SALA" maxlength="5"><button class="b alt" data-a="join">Entrar na sala</button><p id="nst" style="margin:0;text-align:center;opacity:.8"></p></div></main>
 <main id="lobby" class="scr" hidden><h2>Sala <span id="code"></span> <button data-a="copy" style="font-size:14px">📋 Copiar</button></h2>
 <div class="card lb">
 <section class="sec ho"><h4>PARTIDA</h4><div class="ln">Modo <select id="mode"><option value="solo">Solo (1x1)</option><option value="duo">Duplas (2x2)</option></select></div><div class="ln">Mira <select id="am"><option value="full">Completa (com linha)</option><option value="pt">Só o alvo (sem linha)</option></select></div></section>
@@ -91,6 +91,7 @@ button{cursor:pointer}hr{width:100%;border:0;border-top:1px dashed #4b3d9a}
 <div class="ln"><button class="b" data-e="save">Salvar taco</button><button data-e="close">Cancelar</button></div></div></div>
 <div id="chat" hidden><input id="ci" maxlength="60" placeholder="Digite e aperte Enter…"><button data-a="say">💬</button></div>
 <script>
+const WS_URL='wss://sinutec.onrender.com';
 const W=1000,H=500,R=12,M=60,$=s=>document.querySelector(s);
 const COL=['#f5c400','#1f4fd8','#e02020','#6b2fb3','#f57c00','#0a8a3a','#7a1a1a','#111'];
 const TABLES={Verde:['#0d7a4b','#5a2e12'],Azul:['#1565c0','#1c2a5a'],Vermelha:['#b3242e','#3a0d12'],Roxa:['#6a2fb8','#241046'],Preta:['#2a2a32','#09090c'],Rosa:['#d6368f','#4a0f33']};
@@ -102,7 +103,7 @@ const cv=$('#cv'),ctx=cv.getContext('2d');
 const esc=s=>(s||'').replace(/[<>&"']/g,'').slice(0,14)||'Jogador';
 const nm=id=>(G.players.find(p=>p.id==id)||{name:'?'}).name,tm=id=>(G.players.find(p=>p.id==id)||{team:0}).team;
 const mine=()=>G.players.find(p=>p.id==me)||{skin:0};
-const bc=m=>Object.values(conns).forEach(c=>c.open&&c.send(m)),toHost=m=>conn&&conn.open&&conn.send(m);
+const bc=m=>wsend({k:'d',m}),toHost=m=>wsend({k:'d',m});
 const metaObj=()=>({t:'m',players:G.players,mode:G.mode,color:G.color,screen:G.screen,turn:G.turn,groups:G.groups,bih:G.bih,msg:G.msg,win:G.win,def:G.def,am:G.am,tl:Math.max(0,(dl-Date.now())/1000)});
 const snap=(mv,j)=>({t:'st',mv,j,b:G.balls.map(b=>[+b.x.toFixed(1),+b.y.toFixed(1),b.out?1:0])});
 function sync(){bc(metaObj());if(G.balls.length)bc(snap(0,1));ui()}
@@ -110,13 +111,8 @@ function makeBalls(){G.balls=[...Array(16)].map((_,n)=>({n,x:0,y:0,vx:0,vy:0,tx:
 function setImg(d){if(d){img=new Image;img.src=d}else img=null}
 /* ---------- rede (P2P via PeerJS) ---------- */
 const gen=()=>[...Array(5)].map(()=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.random()*32|0]).join('');
-function create(){saveP();me='H';isHost=true;code=gen();peer=new Peer('sinutec-'+code);
- peer.on('open',()=>{G.players=[{id:'H',name:prof.name,tag:prof.tag,av:prof.av,bn:prof.bn,ck:prof.ck,team:0,skin:prof.ck?99:0}];G.screen='lobby';ui()});
- peer.on('connection',c=>{c.on('open',()=>{conns[c.peer]=c});c.on('data',m=>hostMsg(c,m));c.on('close',()=>drop(c.peer))});
- peer.on('error',e=>e.type=='unavailable-id'?create():alert('Erro de rede: '+e.type))}
-function join(){saveP();code=$('#cin').value.trim().toUpperCase();if(code.length<5)return;peer=new Peer();
- peer.on('open',id=>{me=id;conn=peer.connect('sinutec-'+code,{reliable:true});conn.on('open',()=>conn.send({t:'hi',name:prof.name,tag:prof.tag,av:prof.av,bn:prof.bn,ck:prof.ck}));conn.on('data',guestMsg);conn.on('close',()=>{alert('Sala encerrada');location.reload()})});
- peer.on('error',e=>alert(e.type=='peer-unavailable'?'Sala não encontrada.':'Erro: '+e.type))}
+function create(){saveP();me='H';isHost=true;code=gen();wsConn(()=>wsend({k:'host',code}),o=>{if(o.k=='ok'){G.players=[{id:'H',name:prof.name,tag:prof.tag,av:prof.av,bn:prof.bn,ck:prof.ck,team:0,skin:prof.ck?99:0}];G.screen='lobby';ui()}else if(o.k=='err'){if(o.e=='unavailable-id'){code=gen();wsend({k:'host',code})}else alert('Erro: '+o.e)}else hostWs(o)})}
+function join(){saveP();code=$('#cin').value.trim().toUpperCase();if(code.length<5)return;wsConn(()=>wsend({k:'join',code}),o=>{if(o.k=='joined'){me=o.id;wsend({k:'d',m:{t:'hi',name:prof.name,tag:prof.tag,av:prof.av,bn:prof.bn,ck:prof.ck}})}else if(o.k=='err'){ws.onclose=null;ws.close();alert(o.e=='peer-unavailable'?'Sala não encontrada.':o.e=='full'?'Sala cheia.':'Erro: '+o.e)}else if(o.k=='d')guestMsg(o.m)})}
 function hostMsg(c,m){const id=c.peer;
  if(m.t=='hi'){if(G.players.length>=4||G.screen!='lobby'){c.send({t:'full'});return}
   const n0=G.players.filter(p=>!p.team).length;G.players.push({id,name:esc(m.name),tag:esc2(m.tag),av:okI(m.av,20000)?m.av:null,bn:okI(m.bn,45000)?m.bn:null,ck:okP(m.ck,30000)?m.ck:null,team:n0<=G.players.length-n0?0:1,skin:okP(m.ck,30000)?99:0});
@@ -382,4 +378,22 @@ $('#ed').addEventListener('click',e=>{const t=e.target.closest('[data-e]');if(!t
 $('#edb').oninput=()=>edRender(ex,1);
 document.addEventListener('click',e=>{if(e.target.closest('[data-a="cedit"]'))edOpen()});
 document.addEventListener('keydown',e=>{if(e.key=='Escape')$('#ed').hidden=true});
+
+/* ====== rede via servidor (Render) ====== */
+let ws=null;
+const wsend=o=>{if(ws&&ws.readyState==1)ws.send(JSON.stringify(o))};
+function wsConn(first,onMsg){
+ if(/SEU-SERVIDOR/.test(WS_URL)){alert('Falta configurar o servidor: troque WS_URL no topo do código pelo endereço do seu serviço no Render.');return}
+ if(ws){ws.onclose=null;ws.close()}
+ const st=$('#nst');let n=0,ok=0;
+ const go=()=>{const w=ws=new WebSocket(WS_URL);
+  w.onopen=()=>{ok=1;st.textContent='';first()};
+  w.onmessage=e=>{let o;try{o=JSON.parse(e.data)}catch(x){return}onMsg(o)};
+  w.onclose=()=>{if(w!==ws)return;if(!ok&&n++<40){st.textContent='⏳ Acordando o servidor… pode levar até 1 min ('+n+')';setTimeout(go,3000)}else{alert(ok?(isHost?'Conexão com o servidor perdida.':'Sala encerrada'):'Não consegui conectar ao servidor.');location.reload()}}};
+ go()}
+function hostWs(e){
+ if(e.k=='g+')conns[e.id]={peer:e.id,open:true,send:m=>wsend({k:'d',to:e.id,m}),close:()=>wsend({k:'kick',id:e.id})};
+ else if(e.k=='g-')drop(e.id);
+ else if(e.k=='d'&&conns[e.from])hostMsg(conns[e.from],e.m)}
+addEventListener('pagehide',()=>{if(ws)ws.onclose=null});
 </script></body></html>
