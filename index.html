@@ -475,7 +475,7 @@ const SKINS=[['Clássico','#e9c98f','#a3652a','#3b2210','reto'],['Neon','#2ef2ff
 const PK=[[-10,-10],[W+10,-10],[-10,H+10],[W+10,H+10],[W/2,-16],[W/2,H+16]],PRd=i=>i<4?29:26,PRv=i=>i<4?25:22,PRf=i=>Math.hypot(i<4?22:28,PRd(i))+2;
 let G={screen:'menu',players:[],mode:'solo',color:'Verde',balls:[],turn:null,groups:[null,null],bih:false,msg:'',win:null,mv:false};
 applyOptions();
-let clkOff=null,lastAt=0,netLate=0,gDelay=100,gRt=0,gPrev=0,jitPk=30,lastStAt=0,gSm=0;
+let clkOff=null,lastAt=0,netLate=0,gDelay=150,gEnd=0,gRt=0,gPrev=0,jitPk=30,lastStAt=0,gSm=0;
 function hostAt(ts,now){if(!Number.isFinite(ts))return now;const d=now-ts;clkOff=clkOff===null||d<clkOff?d:clkOff+(d-clkOff)*.02;netLate=Math.max(0,d-clkOff);let a=ts+clkOff;if(a<=lastAt)a=lastAt+1;lastAt=a;return a}
 let me,isHost=false,trainingMode=false,peer,conn,conns={},code,img=null,A=null,drag=null,lt=0,first=null,pocketed=[],broke=true,tp=[1,0],acc=0,last=0,hc='',bgTimer=null,bgLast=0,netAt=0,guestStates=[];
 const cv=$('#cv'),ctx=cv.getContext('2d');
@@ -520,7 +520,8 @@ function drop(id){delete conns[id];const was=G.turn==id;G.players=G.players.filt
  sync()}
 function guestMsg(m){
  if(m.t=='m'){dl=Date.now()+(m.tl||0)*1000;Object.assign(G,{players:m.players.map(p=>Object.assign(p,assets[p.id]||{})),mode:m.mode,color:m.color,screen:m.screen,turn:m.turn,groups:m.groups,bih:m.bih,msg:m.msg,win:m.win,def:m.def,am:m.am,teamNames:Array.isArray(m.tn)?[tnClean(m.tn[0])||'Time A',tnClean(m.tn[1])||'Time B']:undefined});ui()}
- else if(m.t=='st'){if(!G.balls.length)makeBalls();const now=performance.now(),sample={at:hostAt(m.ts,now),b:m.b};if(m.j||!m.mv){guestStates.length=0;gRt=0;lastStAt=now;m.b.forEach((q,i)=>{const b=G.balls[i];b.x=b.tx=q[0];b.y=b.ty=q[1];b.out=!!q[2];b.vx=Number.isFinite(q[3])?q[3]:0;b.vy=Number.isFinite(q[4])?q[4]:0;b.st=now});G.mv=!!m.mv}else{guestStates.push(sample);lastStAt=now;jitPk=netLate>jitPk?netLate:jitPk*.97+netLate*.03;if(guestStates.length>30)guestStates.shift();m.b.forEach((q,i)=>{const b=G.balls[i];b.out=!!q[2];b.vx=Number.isFinite(q[3])?q[3]:0;b.vy=Number.isFinite(q[4])?q[4]:0});G.mv=true}}
+ else if(m.t=='st'){if(!G.balls.length)makeBalls();const now=performance.now(),sample={at:hostAt(m.ts,now),b:m.b};if(m.j&&G.mv&&guestStates.length){const fb=m.b.map(q=>[q[0],q[1],q[2],0,0]);guestStates.push({at:Math.max(sample.at,guestStates[guestStates.length-1].at+1),b:fb});gEnd=guestStates[guestStates.length-1].at;lastStAt=now}
+  else if(m.j||!m.mv){guestStates.length=0;gRt=0;gEnd=0;lastStAt=now;m.b.forEach((q,i)=>{const b=G.balls[i];b.x=b.tx=q[0];b.y=b.ty=q[1];b.out=!!q[2];b.vx=Number.isFinite(q[3])?q[3]:0;b.vy=Number.isFinite(q[4])?q[4]:0;b.st=now});G.mv=!!m.mv}else{gEnd=0;guestStates.push(sample);lastStAt=now;jitPk=netLate>jitPk?netLate:jitPk*.97+netLate*.03;if(guestStates.length>30)guestStates.shift();m.b.forEach((q,i)=>{const b=G.balls[i];b.out=!!q[2];b.vx=Number.isFinite(q[3])?q[3]:0;b.vy=Number.isFinite(q[4])?q[4]:0});G.mv=true}}
  else if(m.t=='pa'){assets[m.id]={av:m.av,bn:m.bn,ck:m.ck};const p=G.players.find(x=>x.id==m.id);if(p)Object.assign(p,assets[m.id]);hc='';ui()}
   else if(m.t=='aim'){if(m.id==me)return;setAim(m);if(A&&G.bih&&G.balls[0]&&Number.isFinite(m.x)&&Number.isFinite(m.y)){const b=G.balls[0];b.tx=m.x;b.ty=m.y;b.vx=b.vy=0;b.st=performance.now()}}
  else if(m.t=='sfx'&&m.id!=me)m.e.forEach(q=>{const w=G.screen=='game'?Math.round(gDelay):0;w>20?setTimeout(()=>sfx(q[0],q[1]),w):sfx(q[0],q[1])});else if(m.t=='img')setImg(m.d);else if(m.t=='music')setMusic(String(m.u||''),m.i|0);else if(m.t=='mtrk')mGoto(m.i|0);else if(m.t=='mctl')mCtl(m.c);else if(m.t=='chat')say(m.id,m.m);
@@ -584,7 +585,7 @@ const okPos=(x,y)=>x>=R&&x<=W-R&&y>=R&&y<=H-R&&G.balls.every(b=>b.n==0||b.out||M
 function shoot(a){sfx('cue',a.p);isHost?doShot(a):toHost({t:'shot',a:a.a,p:a.p,x:a.x,y:a.y,sx:a.sx,sy:a.sy});if(!isHost){G.mv=true;const t0=performance.now();setTimeout(()=>{if(!isHost&&G.mv&&lastStAt<t0)G.mv=false},2500)}A=null;resetPower()}
 function doShot(m){if(G.turn!=m.id||G.mv||G.win!=null)return;const c=G.balls[0];
  if(G.bih&&m.x!=null&&okPos(m.x,m.y)){c.x=m.x;c.y=m.y}
- if(m.id!=me)sfx('cue',m.p);bc({t:'sfx',id:m.id,e:[['cue',m.p]]});const v=2400*m.p*(.4+.6*m.p);c.sx=Math.max(-1,Math.min(1,+m.sx||0));c.sy=Math.max(-1,Math.min(1,+m.sy||0));c.vx=Math.cos(m.a)*v;c.vy=Math.sin(m.a)*v;first=null;pocketed=[];G.bih=false;G.mv=true;A=null;bc({t:'aim',a:null});bc(metaObj())}
+ if(m.id!=me)sfx('cue',m.p);bc({t:'sfx',id:m.id,e:[['cue',m.p]]});const v=1800*m.p*(.4+.6*m.p);c.sx=Math.max(-1,Math.min(1,+m.sx||0));c.sy=Math.max(-1,Math.min(1,+m.sy||0));c.vx=Math.cos(m.a)*v;c.vy=Math.sin(m.a)*v;first=null;pocketed=[];G.bih=false;G.mv=true;A=null;bc({t:'aim',a:null});bc(metaObj());netAt=performance.now();bc(snap(1,0))}
 function next(t){const o=1-t,l=G.players.filter(p=>p.team==o);return l[tp[o]++%l.length].id}
 function endShot(){if(trainingMode){const B=G.balls,cueIn=B[0].out,remaining=B.some(b=>b.n&&!b.out);if(!remaining){makeBalls();rack();DR.length=0;Object.keys(PF).forEach(k=>delete PF[k]);G.msg='Todas encaçapadas! Mesa montada de novo.'}else{if(cueIn){const c=B[0];c.out=false;c.was=false;c.x=c.tx=W*.25;c.y=c.ty=H/2;c.vx=c.vy=0;c.px=c.x;c.py=c.y;c.ox=c.oy=0}G.msg=cueIn?'Falta! A branca voltou à mesa.':'Treino livre · encaçape as bolas restantes'}first=null;pocketed=[];G.bih=false;G.mv=false;A=null;sync();return}
  const B=G.balls,t=tm(G.turn),o=1-t,gr=G.groups,pk=pocketed,breaking=broke,ty=n=>n==8?'e':n<8?'s':'f';
@@ -635,12 +636,13 @@ function renderGuest(now){
  const dtm=gPrev?Math.min(100,now-gPrev):16.7;gPrev=now;
  if(!G.mv||!guestStates.length){gRt=0;if(G.bih&&G.balls[0]){const b=G.balls[0];b.x+=(b.tx-b.x)*.45;b.y+=(b.ty-b.y)*.45}return}
  /* buffer adaptativo: cresce rapido se a rede oscila, encolhe devagar */
- const want=Math.max(55,Math.min(260,34+jitPk*1.2+12));
+ const want=Math.max(130,Math.min(450,70+jitPk*1.6));
  gDelay+=(want-gDelay)*(want>gDelay?.2:.01);
  const tgt=now-gDelay;
  if(!gRt||Math.abs(tgt-gRt)>400)gRt=tgt;
  else{gRt+=dtm;gRt+=Math.max(-.2*dtm,Math.min(.25*dtm,(tgt-gRt)*.1))}
  const T=gRt,B=G.balls;
+  if(gEnd&&guestStates.length&&T>=gEnd){const f=guestStates[guestStates.length-1];f.b.forEach((q,i)=>{const b=B[i];b.x=b.tx=q[0];b.y=b.ty=q[1];b.out=!!q[2];b.vx=b.vy=0});guestStates.length=0;gRt=0;gEnd=0;G.mv=false;return}
  while(guestStates.length>2&&guestStates[1].at<=T)guestStates.shift();
  const a=guestStates[0],n=guestStates[1];
  if(n&&T>=a.at&&T<=n.at){
@@ -651,7 +653,7 @@ function renderGuest(now){
    else{b.x=h00*q[0]+h10*s*q[3]+h01*m[0]+h11*s*m[3];b.y=h00*q[1]+h10*s*q[4]+h01*m[1]+h11*s*m[4]}});
  }else if(T<a.at){a.b.forEach((q,i)=>{const b=B[i];b.out=!!q[2];b.x=q[0];b.y=q[1]})}
  else{
-  const s=guestStates[guestStates.length-1],ag=Math.min(.15,Math.max(0,(T-s.at)/1000));
+  const s=guestStates[guestStates.length-1],ag=Math.min(.25,Math.max(0,(T-s.at)/1000));
   s.b.forEach((q,i)=>{const b=B[i];b.out=!!q[2];b.x=q[0]+q[3]*ag;b.y=q[1]+q[4]*ag});
  }
 }
