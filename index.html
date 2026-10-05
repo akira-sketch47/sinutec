@@ -430,16 +430,48 @@ hr{border-top-color:#594a35}
  #intro *,#intro,#menu *,#lobby *,#hud,#hud *,#win{animation-duration:.01s!important;animation-delay:0s!important;animation-iteration-count:1!important}
 }
 
+
+/* ===== menu: leitura e ícones ===== */
+#settingsCorner,#snd,#musBtn{position:fixed;top:12px;width:42px;height:42px;padding:0;display:grid;place-items:center;border:1px solid #9a7440;border-radius:8px;background:#261a10f2;color:#f0d9a2;opacity:1;font-size:0;line-height:0;box-shadow:0 2px 8px #0009;cursor:pointer}
+#snd{right:12px;z-index:70}#settingsCorner{right:62px;z-index:69}#musBtn{right:112px;z-index:69}#musBtn[hidden]{display:none}
+#settingsCorner:hover,#snd:hover,#musBtn:hover{background:#3d2a18;color:#fff3cf;border-color:#d8ad55}
+#settingsCorner svg,#snd svg,#musBtn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#snd[aria-pressed=false]{color:#d9967f}
+#menu.scr{padding-top:68px}
+#menu .comanda input{font-size:25px;color:#102248}#menu .comanda #tg{font-size:21px}
+#menu .comanda input::placeholder{color:#3a2a1ac0}
+#menu .bnr{font:600 14px "DM Sans",sans-serif;color:#2b1d10}
+#menu .bnr span{display:inline-flex;align-items:center;gap:8px;opacity:1;font-weight:600}
+#menu .bnr span::before{content:'';flex:none;width:20px;height:20px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z'/%3E%3Ccircle cx='12' cy='13' r='4'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z'/%3E%3Ccircle cx='12' cy='13' r='4'/%3E%3C/svg%3E") center/contain no-repeat}
+#menu .avb{font:700 13px "DM Sans",sans-serif}
+#menu .menu-taco{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;border:2px solid #3a2a1a99;color:#2b1d10;font:700 15px "DM Sans",sans-serif}
+#menu .menu-taco svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#menu .menu-actions>button b{font-size:24px}
+#menu .menu-actions>button small{margin-top:3px;font:500 15px/1.25 "DM Sans",sans-serif;color:#b9e0f3}
+#menu .menu-actions>button.b small{color:#3b2708;font-weight:600}
+#menu .action-icon{width:40px;height:40px;stroke-width:1.9}
+#menu .join-label{margin-top:18px;font:600 16px "DM Sans",sans-serif;color:#b9e0f3}
+#menu .join-row input::placeholder{color:#efe8d6b0;font:600 16px "DM Sans",sans-serif;letter-spacing:.16em}
+#menu .join-row button.b.alt{min-height:54px;padding:0 22px;gap:10px;border-color:#a5d6ef;color:#d3edfa;font-size:18px}
+#menu .join-row .action-icon{width:24px;height:24px}
+#menu #nst{font-size:14px;font-weight:600}
+#chatToggle{display:grid;place-items:center;width:42px;height:42px;border:1px solid #9a7440;border-radius:8px;background:#261a10f2;color:#f0d9a2;font-size:0;line-height:0}
+#chatToggle[hidden]{display:none}
+#chatToggle:hover{background:#3d2a18;color:#fff3cf;border-color:#d8ad55}
+#chatToggle svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#game #hud{margin-top:14px}
+#lobby.scr{padding-bottom:72px}
+@media(max-width:480px){#chatToggle{left:6px;bottom:8px;width:40px;height:40px}#settingsCorner,#snd,#musBtn{top:8px;width:40px;height:40px}#snd{right:8px}#settingsCorner{right:56px}#musBtn{right:104px}#menu.scr{padding-top:60px}}
 </style></head><body>
 <main id="menu" class="scr"><div class="menu-balls" aria-hidden="true"><i class="ib" style="--x:5%;--s:46px;--c:#f5c400;--t:16s;--w:0s;--o:.28"></i><i class="ib" style="--x:19%;--s:30px;--c:#e02020;--t:13s;--w:3s;--o:.25"></i><i class="ib" style="--x:35%;--s:54px;--c:#1f4fd8;--t:18s;--w:1s;--o:.22"></i><i class="ib" style="--x:55%;--s:34px;--c:#0a8a3a;--t:14s;--w:5s;--o:.25"></i><i class="ib" style="--x:70%;--s:48px;--c:#f57c00;--t:17s;--w:2s;--o:.26"></i><i class="ib" style="--x:84%;--s:32px;--c:#6b2fb3;--t:12.5s;--w:6s;--o:.25"></i><i class="ib" style="--x:94%;--s:50px;--c:#e02020;--t:19s;--w:4s;--o:.22"></i></div>
 <section class="menu-intro" aria-label="SINUTEC"><h1>SINUTEC<span>.</span></h1><p class="menu-tag">Mesa livre, pode chegar.</p></section>
 <div class="menu-board">
-<section class="comanda" aria-label="Seu perfil"><label class="bnr" id="bnr" title="Banner do perfil"><span id="bnt">Adicionar imagem de capa</span><input type="file" id="bf" accept="image/*" hidden></label><div class="prof"><label class="avb" title="Selecionar foto de perfil"><img id="avi" hidden><span id="avt">FOTO</span><input type="file" id="af" accept="image/*" hidden></label><div><input id="nm" aria-label="Seu nome" placeholder="Seu nome" maxlength="14"><input id="tg" aria-label="Sua descrição" placeholder="Descrição (opcional)" maxlength="40"></div></div><button class="menu-taco" data-a="cedit">Personalizar taco</button></section>
-<section class="cardapio" aria-label="Acesso ao jogo"><h2>Cardápio</h2><div class="menu-actions">
-<button class="b" data-a="create"><svg class="action-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="m3 28 11-11M2 25l4 4M13 16l3-3"/><circle class="ball-fill" cx="20" cy="10" r="3.2"/><circle class="ball-light" cx="25.5" cy="15.5" r="3.2"/><circle class="ball-fill" cx="20" cy="21" r="3.2"/><circle class="ball-light" cx="26" cy="25" r="3.2"/></svg><span><b>Criar sala</b><small>Você é o dono da mesa</small></span></button>
-<button class="secondary-action" data-a="training"><svg class="action-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="m5 5 17 17M3 7l4-4M20 24l2-2"/><circle class="ball-light" cx="25" cy="25" r="4"/><path d="M9 9 7 11"/></svg><span><b>Treino solo</b><small>Só você e a mesa</small></span></button>
+<section class="comanda" aria-label="Seu perfil"><label class="bnr" id="bnr" title="Banner do perfil"><span id="bnt">Adicionar imagem de capa</span><input type="file" id="bf" accept="image/*" hidden></label><div class="prof"><label class="avb" title="Selecionar foto de perfil"><img id="avi" hidden><span id="avt">FOTO</span><input type="file" id="af" accept="image/*" hidden></label><div><input id="nm" aria-label="Seu nome" placeholder="Seu nome" maxlength="14"><input id="tg" aria-label="Sua descrição" placeholder="Descrição (opcional)" maxlength="40"></div></div><button class="menu-taco" data-a="cedit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 20.5 17.5 6.5"/><path d="m17.5 6.5 2.5-2.5" stroke-width="3.2"/><path d="M8 3.5v4M6 5.5h4M18 14.5v4M16 16.5h4"/></svg>Personalizar taco</button></section>
+<section class="cardapio" aria-label="Acesso ao jogo"><h2>Jogar</h2><div class="menu-actions">
+<button class="b" data-a="create"><svg class="action-icon" viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="6" width="26" height="20" rx="3"/><path d="M16 11v10M11 16h10" stroke-width="2.6"/><g fill="currentColor" stroke="none"><circle cx="6.6" cy="9.6" r="1.5"/><circle cx="25.4" cy="9.6" r="1.5"/><circle cx="6.6" cy="22.4" r="1.5"/><circle cx="25.4" cy="22.4" r="1.5"/></g></svg><span><b>Criar sala</b><small>Você é o dono da mesa</small></span></button>
+<button class="secondary-action" data-a="training"><svg class="action-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M4.5 4.5 15 15" stroke-width="2.8"/><circle class="ball-fill" cx="22" cy="22" r="7.5"/><circle cx="22" cy="22" r="2.4" fill="currentColor" stroke="none"/></svg><span><b>Treino solo</b><small>Só você e a mesa</small></span></button>
 <p class="join-label">Já tem um código?</p>
-<div class="join-row"><input id="cin" aria-label="Código da sala" placeholder="código" maxlength="5"><button class="b alt" data-a="join"><svg class="action-icon" viewBox="0 0 28 28" aria-hidden="true"><circle class="ball-fill" cx="14" cy="14" r="10"/><circle cx="14" cy="14" r="4"/><path d="M8 6.5a9 9 0 0 1 12 0"/></svg><span>Entrar</span></button></div>
+<div class="join-row"><input id="cin" aria-label="Código da sala" placeholder="código" maxlength="5"><button class="b alt" data-a="join"><svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/></svg><span>Entrar</span></button></div>
 <p id="nst"></p></div></section>
 </div></main>
 <main id="lobby" class="scr" hidden><header class="lobby-heading"><div><h2>Sala <span id="code"></span></h2><p class="lobby-sub">Passe o código pros jogadores entrarem</p></div><button class="lobbyCopy" data-a="copy">Copiar código</button></header>
@@ -453,7 +485,7 @@ hr{border-top-color:#594a35}
 <main id="game" class="scr" hidden><div id="hud"><div id="t0"></div><div id="mid"><div id="tn"></div><div id="tt"></div></div><div id="t1"></div></div><div id="row"><div id="pbar" title="Puxe o taco para baixo e solte para tacar"><div id="pf"></div><output id="pval" aria-label="Força aplicada">0%</output></div><canvas id="cv" width="1120" height="620"></canvas><div id="spin" title="Efeito na bola (duplo clique zera)"><i id="sd"></i></div></div><section id="ballReturn" aria-label="Bolas encaçapadas"><strong id="returnLabel">Retorno das bolas</strong><div id="pocketBalls" role="list"><svg id="returnCurve" aria-hidden="true" viewBox="0 0 1120 42" preserveAspectRatio="none"><defs><linearGradient id="returnRail" x1="0" x2="1"><stop stop-color="#71543a"/><stop offset=".12" stop-color="#c7a36e"/><stop offset=".35" stop-color="#6d5137"/><stop offset=".58" stop-color="#c7a36e"/><stop offset=".82" stop-color="#71543a"/><stop offset="1" stop-color="#c7a36e"/></linearGradient></defs><path class="rail" d="M28 4H1120M28 38H1120"/><path d="M28 4C14 4 8 10 8 21C8 32 14 38 28 38"/></svg><span id="ballReturnEmpty">As bolas encaçapadas aparecem aqui</span></div></section><small id="gameHelp" style="opacity:.6">Puxe o taco para baixo e solte · ←/→ ou A/D: ajuste fino da mira · Shift = ainda mais fino</small><div id="win" hidden></div><button class="sm" data-a="exit">Sair</button><aside id="aimWheel" hidden aria-label="Ajuste fino da mira"><div id="aimWheelTrack"><i id="aimWheelGear" aria-hidden="true">⚙</i></div></aside></main>
 <div id="settings" hidden><div class="card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><h2 id="settingsTitle">Configurações</h2><label class="settingRow">Tema de fundo<select id="backgroundTheme"><option value="classic">Roxo clássico</option><option value="ocean">Oceano</option><option value="forest">Floresta</option><option value="sunset">Pôr do sol</option></select></label><label class="settingRow">Volume da música<span class="volRow"><input id="volMusic" type="range" min="0" max="100" step="1"><output id="volMusicV">60%</output></span></label><label class="settingRow">Volume dos efeitos (tacadas, caçapas)<span class="volRow"><input id="volSfx" type="range" min="0" max="100" step="1"><output id="volSfxV">100%</output></span></label><label class="settingToggle"><input id="aimWheelEnabled" type="checkbox"> Ativar roleta vertical de ajuste fino (mobile)</label><small>Arraste a roleta para cima ou para baixo durante a sua vez para ajustar a mira com precisão.</small><button data-a="closeSettings">Fechar</button></div></div>
 <div id="mus" hidden><div class="card"><h2>Música da sala</h2><div class="ho"><input id="mu" placeholder="Cole o link de uma playlist ou música do SoundCloud" style="width:100%"><div class="ln" style="margin-top:8px"><button class="b" data-a="mplay">Tocar</button><button class="b alt" data-a="mstop">Parar</button></div><div id="mcs" style="margin-top:10px"><button data-a="mprev" title="Anterior">Anterior</button><button data-a="mtog" title="Pausar/Retomar para todos">Pausar / retomar</button><button data-a="mnext" title="Próxima">Próxima</button></div></div><label>Volume (só pra você) <input type="range" id="mv" min="0" max="100" value="60"></label><small id="mnow">Nada tocando</small><small style="opacity:.6">Só o dono da sala escolhe a música e troca de faixa. Use o link completo do soundcloud.com (playlists = link com /sets/).</small><button data-a="mclose">Fechar</button></div></div>
-<button id="musBtn" data-a="mopen" title="Música" hidden>MÚSICA</button><div id="mp"></div><div id="mb" hidden title="Clique para pausar/retomar (só pra você)"><b id="mbi">||</b><span id="mbt"></span><b class="mx" data-a="mnext" title="Próxima faixa">></b></div><div id="ann" hidden></div><div id="intro" hidden></div><audio id="cueAudio" preload="auto"></audio><audio id="pocketAudio" preload="auto"></audio><audio id="collisionAudio" preload="auto"></audio><audio id="railAudio" preload="auto"></audio><button id="settingsCorner" data-a="settings" aria-label="Configurações" title="Configurações">AJUSTES</button><button id="snd" title="Som" aria-label="Alternar som">SOM</button>
+<button id="musBtn" data-a="mopen" title="Música" aria-label="Música" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></button><div id="mp"></div><div id="mb" hidden title="Clique para pausar/retomar (só pra você)"><b id="mbi">||</b><span id="mbt"></span><b class="mx" data-a="mnext" title="Próxima faixa">></b></div><div id="ann" hidden></div><div id="intro" hidden></div><audio id="cueAudio" preload="auto"></audio><audio id="pocketAudio" preload="auto"></audio><audio id="collisionAudio" preload="auto"></audio><audio id="railAudio" preload="auto"></audio><button id="settingsCorner" data-a="settings" aria-label="Configurações" title="Configurações"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button><button id="snd" title="Som ligado" aria-label="Desligar som"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></button>
 <div id="ed" hidden><div class="card" style="width:min(760px,96vw)"><h2 style="margin:0">Desenhar taco</h2>
 <div class="edw"><canvas id="edc" width="680" height="64"></canvas></div><small style="opacity:.7">ponta ← → base · pode desenhar fora do contorno do molde (relevos), dentro da área quadriculada</small>
 <div class="ln"><b>Cor do taco</b><input type="color" id="edb" value="#e9c98f"><span id="edbp" class="row"></span></div>
@@ -462,7 +494,7 @@ hr{border-top-color:#594a35}
 <div class="ln">Espessura <input type="range" id="eds" min="1" max="12" value="3"><label><input type="checkbox" id="edf" checked> Formas preenchidas</label></div>
 <div class="ln"><button data-e="undo">Desfazer</button><button data-e="clear">Limpar desenho</button></div>
 <div class="ln"><button class="b" data-e="save">Salvar taco</button><button data-e="close">Cancelar</button></div></div></div>
-<div id="chat" hidden><input id="ci" maxlength="60" placeholder="Digite e aperte Enter…"><button id="chatClose" type="button" aria-label="Fechar chat">✕</button><button data-a="say" aria-label="Enviar mensagem">Enviar</button></div><button id="chatToggle" type="button" aria-label="Abrir chat" aria-expanded="false" hidden>CHAT</button>
+<div id="chat" hidden><input id="ci" maxlength="60" placeholder="Digite e aperte Enter…"><button id="chatClose" type="button" aria-label="Fechar chat">✕</button><button data-a="say" aria-label="Enviar mensagem">Enviar</button></div><button id="chatToggle" type="button" aria-label="Abrir chat" aria-expanded="false" title="Chat" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
 <script>
 const WS_URL='wss://sinutec.onrender.com';
 const W=1000,H=500,R=11,M=60,$=s=>document.querySelector(s);
@@ -484,7 +516,7 @@ const JCU=14,JR=1.5,MOUTH_C=45.6,MOUTH_M=50.6,JA_C=38,JA_S=76,
  KC=(MOUTH_C+2*JR)/Math.SQRT2-JR,
  KM=(MOUTH_M+2*JR)/2,
  LC=(JCU-JR)/sC,LS=(JCU-JR)/sS,
- PK=[[-4,-4],[W+4,-4],[-4,H+4],[W+4,H+4],[W/2,-21],[W/2,H+21]],PRd=i=>22,PRv=i=>i<4?24:21,
+ PK=[[-15,-15],[W+15,-15],[-15,H+15],[W+15,H+15],[W/2,-24],[W/2,H+24]],PRv=i=>i<4?24:21,PRd=i=>PRv(i),DROP_G=24,
  KN=[];
 /* cada "jaw" = cápsula (eixo + raio JR): a ponta arredondada + a face inclinada do corte, por onde a bola ricocheteia */
 for(const sx of[1,-1])for(const sy of[1,-1]){const X=v=>sx>0?v:W-v,Y=v=>sy>0?v:H-v;
@@ -593,7 +625,7 @@ function step(dt){const B=G.balls;
   let dx=b.x-a.x,dy=b.y-a.y,d2=dx*dx+dy*dy;if(d2<4*R*R&&d2>0){const d=Math.sqrt(d2),nx=dx/d,ny=dy/d,ov=(2*R-d)/2;a.x-=nx*ov;a.y-=ny*ov;b.x+=nx*ov;b.y+=ny*ov;
    const vn=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;if(vn<0){const impact=Math.min(1,-vn/1500);sfx('hit',impact);if(isHost)bc({t:'sfx',id:me,e:[['hit',impact]]});const sp0=i==0?Math.hypot(a.vx,a.vy):0,im=-(1.96)*vn/2;a.vx-=im*nx;a.vy-=im*ny;b.vx+=im*nx;b.vy+=im*ny;if(i==0){if(first==null)first=j;if(a.sy){const k=a.sy*sp0*.5;a.vx+=nx*k;a.vy+=ny*k;a.sy=0}}}}}}
  for(const b of B){if(b.out)continue;let got=false;
-  PK.forEach((p,i)=>{if(got)return;const d=Math.hypot(p[0]-b.x,p[1]-b.y),r=PRd(i),sp=Math.hypot(b.vx,b.vy);if(d<r||(sp<60&&d<r+11))got=true});
+  PK.forEach((p,i)=>{if(!got&&Math.hypot(p[0]-b.x,p[1]-b.y)<PRd(i))got=true});
   if(!got&&(b.x<-R-6||b.x>W+R+6||b.y<-R-6||b.y>H+R+6))got=true;
   if(got){b.dvx=b.vx;b.dvy=b.vy;b.out=true;b.vx=b.vy=0;sfx('pocket');if(isHost)bc({t:'sfx',id:me,e:[['pocket',1]]});if(b.n)pocketed.push(b.n);continue}
   let w=0;
@@ -742,16 +774,29 @@ function ball(b){if(b.out)return;const n=b.n,ox=b.ox||0,oy=b.oy||0;ctx.save();ct
  else{ctx.fillStyle='#d22';ctx.beginPath();ctx.arc(0,0,2.6*k,0,7);ctx.fill()}ctx.restore();
  const g=ctx.createRadialGradient(-4,-5,1,0,0,R);g.addColorStop(0,'rgba(255,255,255,.75)');g.addColorStop(.35,'rgba(255,255,255,0)');g.addColorStop(1,'rgba(0,0,0,.4)');ctx.fillStyle=g;ctx.fillRect(-R,-R,2*R,2*R);ctx.fillStyle='rgba(255,255,255,.85)';ctx.beginPath();ctx.ellipse(-4,-5,3,2,-.6,0,7);ctx.fill();ctx.restore()}
 const pocketVisual=i=>PK[i];
-function drops(){const now=performance.now();for(let i=DR.length;i--;){const d=DR[i],u=(now-d.t)/360;if(u>=1){DR.splice(i,1);continue}
- /* a bola mantém o embalo, passa a borda e só então "cai": encolhe e escurece (gravidade = ease-in), sempre escondida atrás da borda do buraco */
- const p=pocketVisual(d.pi),eo=1-(1-u)*(1-u),ei=u*u,sp=Math.hypot(d.vx||0,d.vy||0),m=Math.min(sp*.025,12),mx=sp>40?d.vx/sp*m:0,my=sp>40?d.vy/sp*m:0,
-  x=d.x+mx*eo+(p[0]-d.x)*.45*ei,y=d.y+my*eo+(p[1]-d.y)*.45*ei,sc=1-.5*ei;
- ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.arc(p[0],p[1],PRd(d.pi),0,7);ctx.clip();
- ctx.globalAlpha=u>.8?(1-u)/.2:1;ctx.translate(x,y);ctx.scale(sc,sc);ctx.translate(-x,-y);
- ball({n:d.n,x,y,ox:(d.ox||0)+u*3,oy:d.oy});
- ctx.fillStyle='rgba(0,0,0,'+(.1+.85*ei)+')';ctx.beginPath();ctx.arc(x,y,R,0,7);ctx.fill();ctx.restore();
- /* borda do buraco por cima da bola */
- ctx.save();ctx.strokeStyle='rgba(22,9,5,.85)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(p[0],p[1],PRv(d.pi)+1.5,0,7);ctx.stroke();ctx.restore()}}
+function drops(){const now=performance.now();
+ /* queda por gravidade: a bola mantém o embalo, perde o apoio ao passar a borda, bate na parede do fundo da caçapa e afunda (encolhe, escurece e some atrás da borda) */
+ for(let i=DR.length;i--;){const d=DR[i],p=PK[d.pi],r=PRv(d.pi);
+  if(!d.s){let vx=d.vx||0,vy=d.vy||0,sp=Math.hypot(vx,vy);
+   if(sp<30||Math.hypot(d.x-p[0],d.y-p[1])>r+2){const dx=p[0]-d.x,dy=p[1]-d.y,l=Math.hypot(dx,dy)||1;vx=dx/l*80;vy=dy/l*80;sp=80}
+   if(sp>520){vx*=520/sp;vy*=520/sp}
+   d.s={x:d.x,y:d.y,vx,vy,z:0,vz:0,ox:d.ox||0,oy:d.oy||0,at:d.t,in:false}}
+  const s=d.s,end=Math.min(now,d.t+700);
+  while(s.at<end&&s.z<1){const dt=Math.min(1/120,(end-s.at)/1000);s.at+=dt*1000;
+   s.vz+=DROP_G*dt;s.z+=s.vz*dt;
+   const k=Math.exp(-1.2*dt);s.vx*=k;s.vy*=k;s.x+=s.vx*dt;s.y+=s.vy*dt;s.ox+=s.vx*dt/R;s.oy+=s.vy*dt/R;
+   const dx=s.x-p[0],dy=s.y-p[1],dd=Math.hypot(dx,dy),lim=r+1-(R+1)*Math.min(1,s.z/.4);
+   if(dd<=lim)s.in=true;
+   if(s.in&&dd>lim&&dd>1e-6){const nx=dx/dd,ny=dy/dd,vn=s.vx*nx+s.vy*ny;s.x=p[0]+nx*lim;s.y=p[1]+ny*lim;if(vn>0){s.vx-=1.35*vn*nx;s.vy-=1.35*vn*ny}}}
+  if(s.z>=1||now-d.t>=700){DR.splice(i,1);continue}
+  const z=s.z,sc=1-.4*z,dark=.06+.94*Math.pow(z,.75),fade=z>.8?(1-z)/.2:1;
+  const one=()=>{ctx.translate(s.x,s.y);ctx.scale(sc,sc);ctx.translate(-s.x,-s.y);ball({n:d.n,x:s.x,y:s.y,ox:s.ox,oy:s.oy});ctx.fillStyle='rgba(0,0,0,'+dark+')';ctx.beginPath();ctx.arc(s.x,s.y,R,0,7);ctx.fill()};
+  /* parte da bola sobre o buraco */
+  ctx.save();ctx.globalAlpha=fade;ctx.beginPath();ctx.arc(p[0],p[1],r,0,7);ctx.clip();one();ctx.restore();
+  /* parte ainda sobre o feltro: some rápido, pois a bola já está abaixo do plano da mesa */
+  if(z<.3){ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();ctx.beginPath();ctx.rect(-300,-300,W+600,H+600);ctx.arc(p[0],p[1],r,0,7);ctx.clip('evenodd');ctx.globalAlpha=1-z/.3;one();ctx.restore()}
+  /* borda do buraco por cima da bola */
+  if(z>.1){ctx.save();ctx.globalAlpha=Math.min(1,(z-.1)/.15);ctx.strokeStyle='#d9a45a';ctx.lineWidth=1.8;ctx.beginPath();ctx.arc(p[0],p[1],r+1.4,0,7);ctx.stroke();ctx.strokeStyle='#2a0d06';ctx.lineWidth=.8;ctx.beginPath();ctx.arc(p[0],p[1],r+.3,0,7);ctx.stroke();ctx.restore()}}}
 
 function ray(c,a){const dx=Math.cos(a),dy=Math.sin(a);let t=1e9,hit=null;
  if(dx>0)t=Math.min(t,(W-R-c.x)/dx);if(dx<0)t=Math.min(t,(R-c.x)/dx);if(dy>0)t=Math.min(t,(H-R-c.y)/dy);if(dy<0)t=Math.min(t,(R-c.y)/dy);
@@ -956,7 +1001,7 @@ function playPocketAudio(){if(mute||pocketAudio.error)return;const audio=pocketA
 function playCollisionAudio(v){if(mute||collisionAudio.error||collisionAudioPlaying)return;collisionAudioPlaying=true;collisionAudio.volume=sv()*GAME_AUDIO_VOLUME*Math.min(1,.25+.65*v);collisionAudio.currentTime=0;collisionAudio.play().catch(error=>{collisionAudioPlaying=false;reportCollisionAudioError(error)})}
 function playRailAudio(v){if(mute||railAudio.error||railAudioPlaying)return;railAudioPlaying=true;railAudio.volume=sv()*.7*(.6+.4*v);railAudio.currentTime=0;railAudio.play().catch(error=>{railAudioPlaying=false;reportRailAudioError(error)})}
 const sfx=(n,v=1)=>{if(n=='cue')playCueAudio(v);else if(n=='pocket')playPocketAudio();else if(n=='hit')playCollisionAudio(v);else if(n=='rail')playRailAudio(v)};
-const sb=$('#snd');sb.textContent=mute?'SOM OFF':'SOM ON';sb.setAttribute('aria-pressed',String(!mute));sb.onclick=()=>{mute=!mute;try{localStorage.sinutecMute=mute?1:0}catch(e){}sb.textContent=mute?'SOM OFF':'SOM ON';sb.setAttribute('aria-pressed',String(!mute))};
+const sb=$('#snd'),SND_ON='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>',SND_OFF='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>',sndUi=()=>{sb.innerHTML=mute?SND_OFF:SND_ON;sb.title=mute?'Som desligado':'Som ligado';sb.setAttribute('aria-label',mute?'Ligar som':'Desligar som');sb.setAttribute('aria-pressed',String(!mute))};sndUi();sb.onclick=()=>{mute=!mute;try{localStorage.sinutecMute=mute?1:0}catch(e){}sndUi()};
 /* banner do perfil */
 function okI(s,n){return typeof s=='string'&&s.length<n&&/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(s)}
 function showBn(){$('#bnr').style.backgroundImage=`url(${prof.bn})`;$('#bnr').classList.add('has');$('#bnt').textContent='Trocar imagem de capa'}
